@@ -1,6 +1,6 @@
 # A Simple Job Scheduler
 
-This job scheduler was built using Java 11 concurrency and collections.
+This job scheduler was built using Java 11, concurrency and collections.
 I will describe how I chose to implement each feature requested by the system.
 
 ## Flexibility
