@@ -81,7 +81,7 @@ When I implemented scheduling I made the following assumptions:
 ![Alt text](src/main/resources/results/s5.png)
 
 
-5. We submit 3 jobs with the following priorities: (4, 4 and 2). As we can see in the image, the 2 jobs with priority 4 are executed first. Afterwards, the job with the priority 2 are executed. We can see that the CountDownLatch works.
+5. We submit 3 jobs with the following priorities: (4, 4 and 2). As we can see in the image, the 2 jobs with priority 4 are executed first. Afterwards, the job with the priority 2 is executed. We can see that the CountDownLatch works.
    ![Alt text](src/main/resources/results/s6.png)
    
 ## Notes
