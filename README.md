@@ -86,7 +86,7 @@ When I implemented scheduling I made the following assumptions:
    
 ## Notes
 * Regarding tests 2, 3 and 5: for each each test the jobs are run concurrently because all 3 jobs have the same priority. Due to the non-deterministic behaviour of threads, we might get different outputs if we run the tests again.
-* Regarding test 1 and 5: for each test the jobs are run one after another. The order must be the same if we run the tests again.
+* Regarding test 1 and 4: for each test the jobs are run one after another. The order must be the same if we run the tests again.
 * The tests can be found in the JobSchedulerTest class.
    
 # Improvements
