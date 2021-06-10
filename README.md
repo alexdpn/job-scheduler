@@ -53,7 +53,7 @@ If there are multiple jobs with the same priority then we execute them concurren
 
 We call the await() method on the latch object to make sure that the main thread waits until the two threads finish. Each thread calls the countDown() method on the latch object. When the count reaches zero, the main thread resumes.
 
-## Note: So far, I used the schedule(...) method from the ScheduledExecutorService to submit the Callables and I assumed that the jobs started immediately (no delay).  I will talk about scheduling next.
+Note: So far, I used the schedule(...) method from the ScheduledExecutorService to submit the Callables and I assumed that the jobs started immediately (no delay).  I will talk about scheduling next.
 
 When I implemented scheduling I made the following assumptions:
 1. Jobs that have the same priority and the same delays (i.e. 20 seconds each) will be executed concurrently.
@@ -84,7 +84,7 @@ When I implemented scheduling I made the following assumptions:
 5. We submit 3 jobs with the following priorities: (4, 4 and 2). As we can see in the image, the 2 jobs with priority 4 are executed first. Afterwards, the job with the priority 2 are executed. We can see that the CountDownLatch works.
    ![Alt text](src/main/resources/results/s6.png)
    
-## Notes:
+## Notes
 * Regarding tests 2, 3 and 5: for each each test the jobs are run concurrently because all 3 jobs have the same priority. Due to the non-deterministic behaviour of threads, we might get different outputs if we run the tests again.
 * Regarding test 1 and 5: for each test the jobs are run one after another. The order must be the same if we run the tests again.
 * The tests can be found in the JobSchedulerTest class.
