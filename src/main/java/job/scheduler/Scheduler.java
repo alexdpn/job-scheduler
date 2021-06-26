@@ -3,6 +3,8 @@ package job.scheduler;
 import job.Job;
 import job.exception.JobException;
 
+import java.util.Queue;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -21,8 +23,8 @@ import static job.model.State.SUCCESS;
 
 public final class Scheduler {
     private AtomicLong atomicCounter;
-    private PriorityQueue<Job> queue;
-    private CopyOnWriteArrayList<String> list;
+    private Queue<Job> queue;
+    private List<String> list;
     private ScheduledExecutorService executorService;
 
     private Scheduler(int size) {
@@ -116,7 +118,7 @@ public final class Scheduler {
         }
     }
 
-    public CopyOnWriteArrayList<String> getList() {
+    public List<String> getList() {
         //we return a defensive copy
         //the list is used only for testing purposes and the returned list is sorted lexicographically which means that the jobs may not have been executed in that specific order
         return new CopyOnWriteArrayList<>(list).stream().sorted().collect(Collectors.toCollection(CopyOnWriteArrayList::new));
