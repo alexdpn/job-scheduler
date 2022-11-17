@@ -5,12 +5,7 @@ import job.exception.JobException;
 
 import java.util.Queue;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicLong;
 
 import java.util.PriorityQueue;
@@ -42,7 +37,7 @@ public final class Scheduler {
         job.setState(QUEUED);
     }
 
-    public void startScheduler() {
+    public void startScheduler() throws BrokenBarrierException, InterruptedException, ExecutionException {
         executorService = Executors.newScheduledThreadPool(queue.size());
 
         while (!queue.isEmpty()) {
@@ -56,23 +51,29 @@ public final class Scheduler {
                     //the get() method blocks the other threads which is the behaviour we want
                     System.out.println("Result from Callable is : " + future.get());
                 } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
+                    System.out.println("Concurrent error " + e.getMessage());
+                    throw e;
                 }
-
             } else {
                 //we use a CountDownLatch to execute only the jobs with the same priority and to make sure the other jobs with lower priorities do not start executing
-                CountDownLatch latch = new CountDownLatch((int)atomicCounter.get());
+                CyclicBarrier latch = new CyclicBarrier((int)atomicCounter.get());
                     while (atomicCounter.get() > 0) {
                         atomicCounter.decrementAndGet();
                         Job job = queue.poll();
                         executorService.schedule(() -> {
                             performJob(job);
-                            latch.countDown();}, job.getStartTime().getValue(), job.getStartTime().getTimeUnit());
+                            try {
+                                latch.await();
+                            } catch (BrokenBarrierException | InterruptedException e) {
+                                System.out.println("Concurrent error " + e.getMessage());
+                            }}
+                                , job.getStartTime().getValue(), job.getStartTime().getTimeUnit());
                     }
                     try {
                         latch.await();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    } catch (BrokenBarrierException | InterruptedException e) {
+                        System.out.println("Concurrent error " + e.getMessage());
+                        throw e;
                     }
             }
         }

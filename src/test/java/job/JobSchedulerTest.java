@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.ExecutionException;
 
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,7 +25,8 @@ public class JobSchedulerTest {
     }
 
     @Test
-    public void testJobsWithDifferentPrioritiesAndNoJobExceptionAndNoScheduling () {
+    public void testJobsWithDifferentPrioritiesAndNoJobExceptionAndNoScheduling () throws BrokenBarrierException,
+            InterruptedException, ExecutionException {
         System.setProperty("shouldThrowJobException", String.valueOf(false));
 
         Job job1 = new FileWriterJob(1, "Write frameworks to file", "frameworks", listForJob1);
@@ -48,7 +51,8 @@ public class JobSchedulerTest {
     }
 
     @Test
-    public void testJobsWithSamePrioritiesAndNoJobExceptionAndNoScheduling () {
+    public void testJobsWithSamePrioritiesAndNoJobExceptionAndNoScheduling () throws BrokenBarrierException,
+            InterruptedException, ExecutionException{
         System.setProperty("shouldThrowJobException", String.valueOf(false));
 
         Job job1 = new FileWriterJob(3, "Write frameworks to file", "frameworks", listForJob1);
@@ -73,7 +77,8 @@ public class JobSchedulerTest {
     }
 
     @Test
-    public void testCountDownLatchAndNoJobExceptionAndNoScheduling () {
+    public void testCountDownLatchAndNoJobExceptionAndNoScheduling () throws BrokenBarrierException,
+            InterruptedException, ExecutionException{
         System.setProperty("shouldThrowJobException", String.valueOf(false));
 
         Job job1 = new FileWriterJob(4, "Write frameworks to file", "frameworks", listForJob1);
@@ -98,7 +103,8 @@ public class JobSchedulerTest {
     }
 
     @Test
-    public void testJobsWithDifferentPrioritiesAndJobExceptionAndNoScheduling () {
+    public void testJobsWithDifferentPrioritiesAndJobExceptionAndNoScheduling () throws BrokenBarrierException,
+            InterruptedException, ExecutionException{
         System.setProperty("shouldThrowJobException", String.valueOf(true));
 
         Job job1 = new FileWriterJob(2, "Write frameworks to file", "frameworks", listForJob1);
@@ -123,7 +129,8 @@ public class JobSchedulerTest {
     }
 
     @Test
-    public void testJobsWithSamePrioritiesAndJobExceptionAndNoScheduling () {
+    public void testJobsWithSamePrioritiesAndJobExceptionAndNoScheduling () throws BrokenBarrierException,
+            InterruptedException, ExecutionException{
         System.setProperty("shouldThrowJobException", String.valueOf(true));
 
         Job job1 = new FileWriterJob(3, "Write frameworks to file", "frameworks", listForJob1);
@@ -148,7 +155,8 @@ public class JobSchedulerTest {
     }
 
     @Test
-    public void testJobsWithSamePrioritiesAndNoJobExceptionAndScheduling () {
+    public void testJobsWithSamePrioritiesAndNoJobExceptionAndScheduling () throws BrokenBarrierException,
+            InterruptedException, ExecutionException{
         System.setProperty("shouldThrowJobException", String.valueOf(false));
 
         Job job1 = new FileWriterJob(3, "Write frameworks to file", new StartTime(5, SECONDS), "frameworks", listForJob1);
